@@ -1,0 +1,28 @@
+[data-theme="dark"] {
+    --main-color: #babdc4;
+    --selection-bg-color: #fffba0;
+    --selection-color: #131418;
+    --bg-color: #131418;
+}
+
+[data-theme="light"] {
+    --main-color: #131418;
+    --selection-bg-color: #fffba0;
+    --selection-color: #131418;
+    --bg-color: #fff;
+}
+
+* {
+    transition: all 0.3s ease-in-out;
+}
+
+*::selection,
+*::-moz-selection {
+    background: var(--selection-bg-color);
+    color: var(--selection-color);
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--main-color);
+}
