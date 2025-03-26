@@ -1,5 +1,6 @@
 [data-theme="dark"] {
     --main-color: #babdc4;
+    --secondary-color: red;
     --selection-bg-color: #fffba0;
     --selection-color: #131418;
     --bg-color: #131418;
@@ -7,6 +8,7 @@
 
 [data-theme="light"] {
     --main-color: #131418;
+    --secondary-color: red;
     --selection-bg-color: #fffba0;
     --selection-color: #131418;
     --bg-color: #fff;
@@ -14,6 +16,9 @@
 
 * {
     transition: all 0.3s ease-in-out;
+    color: var(--main-color);
+    background: var(--bg-color);
+    line-height: 1.6;
 }
 
 *::selection,
@@ -25,4 +30,18 @@
 body {
     background-color: var(--bg-color);
     color: var(--main-color);
+}
+
+.nav-link-active {
+    font-weight: 600;
+    opacity: 1;
+}
+
+.nav-link-inactive {
+    font-weight: 400;
+    opacity: 0.8;
+}
+
+.nav-link-inactive:hover {
+    opacity: 1;
 }
