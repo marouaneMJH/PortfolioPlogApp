@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 
 const Skills: string[] = [
     "Programmer",
@@ -7,6 +8,17 @@ const Skills: string[] = [
     "Thinker",
 ];
 
+const StyledSkillSlider = styled.div`
+    display: flex;
+    font-size: 2rem;
+    display: block;
+`;
+
+const StyledSkill = styled.span`
+    color: var(--secondary-color);
+    width: 5rem;
+    background-color: green;
+`;
 const SkillsSlider: React.FC = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [currentSkill, setCurrentSkill] = useState(Skills[0]);
@@ -24,7 +36,11 @@ const SkillsSlider: React.FC = () => {
         setCurrentSkill(Skills[currentIndex]);
     }, [currentIndex]);
 
-    return <div>I'm a {currentSkill}</div>;
+    return (
+        <StyledSkillSlider>
+            I'm a <StyledSkill>{currentSkill}</StyledSkill>
+        </StyledSkillSlider>
+    );
 };
 
 export default SkillsSlider;
