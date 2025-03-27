@@ -1,10 +1,5 @@
 import React from "react";
 
-interface Post {
-    title: string;
-    content: string;
-    createdAt: Date;
-}
 
 const Posts: Post[] = [];
 
