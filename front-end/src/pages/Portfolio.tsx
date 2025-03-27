@@ -1,5 +1,10 @@
 import React from "react";
+import Projects from "../components/Portfolio/Projects";
 
 export default () => {
-    return <div>projects</div>;
+    return (
+        <div>
+            <Projects />
+        </div>
+    );
 };
