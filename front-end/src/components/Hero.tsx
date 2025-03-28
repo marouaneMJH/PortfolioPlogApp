@@ -1,19 +1,20 @@
 import LinkButton from "./basic/LinkButton";
 import SkillsSlider from "./sliders/SkillsSlider";
 import styled from "styled-components";
-import Background from "./WaveDots";
+// import Background from "./WaveDots";
 
 const StyledLastName = styled.span`
     color: var(--secondary-color);
 `;
 
-// const StyledHeroContainer = styled.div`
-//     width: 100%;
-//     display: flex;
-//     flex-direction: column;
-//     justify-content: center;
-//     align-items: center;
-// `;
+const StyledHeroContainer = styled.div`
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;
 
 const StyledBigName = styled.h1`
     font-size: 4rem;
@@ -21,8 +22,8 @@ const StyledBigName = styled.h1`
 
 const Hero = () => {
     return (
-        // <StyledHeroContainer>
-        <div
+        <StyledHeroContainer>
+            {/* <div
             style={{
                 width: "100vw",
                 height: "100vh",
@@ -43,8 +44,7 @@ const Hero = () => {
                 <Background />
             </div>
 
-            {/* Foreground Content */}
-            {/* <div
+            <div
                 style={{
                     position: "relative",
                     zIndex: 1,
@@ -52,16 +52,15 @@ const Hero = () => {
                     textAlign: "center",
                     paddingTop: "20vh",
                 }}
-            >
-                <StyledBigName>
-                    Marouane
-                    <StyledLastName> El Moujahid</StyledLastName>
-                </StyledBigName>
-                <SkillsSlider />
-                <LinkButton to={"/about"}>About</LinkButton>
-            </div> */}
-            {/* </StyledHeroContainer> */}
-        </div>
+            > */}
+            <StyledBigName>
+                Marouane
+                <StyledLastName> El Moujahid</StyledLastName>
+            </StyledBigName>
+            <SkillsSlider />
+            <LinkButton to={"/about"}>About</LinkButton>
+            {/* </div> */}
+        </StyledHeroContainer>
     );
 };
 
