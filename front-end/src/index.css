@@ -1,5 +1,6 @@
 [data-theme="dark"] {
-    --main-color: #babdc4;
+    /* --main-color: #babdc4; */
+    --main-color: #fff;
     --secondary-color: red;
     --selection-bg-color: #fffba0;
     --selection-color: #131418;
@@ -16,9 +17,10 @@
 
 * {
     transition: all 0.3s ease-in-out;
+    font-family: "Open Sans", sans-serif; /* Clean, modern look */
     color: var(--main-color);
     background: var(--bg-color);
-    line-height: 1.6;
+    line-height: 2;
 }
 
 *::selection,
