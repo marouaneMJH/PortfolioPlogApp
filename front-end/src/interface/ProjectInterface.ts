@@ -1,7 +1,9 @@
 export default interface ProjectInterface {
+    id: number;
     title: string;
-    imagePath: URL;
+    imagePath?: URL;
     breafDescreption: string;
     descreption: string;
-    githubLink: URL;
+    githubLink?: URL;
+    demoLink?: URL;
 }
