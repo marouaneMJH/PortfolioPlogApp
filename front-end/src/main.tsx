@@ -8,6 +8,7 @@ import Portfolio from "./pages/Portfolio.tsx";
 import Contact from "./pages/Contact.tsx";
 import Posts from "./pages/Posts.tsx";
 import Home from "./pages/Home.tsx";
+import Post from "./components/plog/Post.tsx";
 
 const router = createBrowserRouter([
     {
@@ -30,7 +31,10 @@ const router = createBrowserRouter([
             },
             {
                 path: "/posts",
-                element: <Posts />,
+                children: [
+                    { index: true, element: <Posts /> },
+                    { path: ":title", element: <Post /> },
+                ],
             },
             {
                 path: "/",

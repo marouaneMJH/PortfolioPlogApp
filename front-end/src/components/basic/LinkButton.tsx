@@ -3,15 +3,22 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
 const LinkButton = styled(NavLink)`
-    background-color: var(--main-color);
-    color: var(--secondary-color);
-    padding: 0.25rem;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    border-radius: 8px;
     min-width: 12rem;
-    border-radius: 40px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
 
+    background-color: var(--bg-secondary-color);
+    color: var(--main-color);
     &:hover {
-        background-color: var(--secondary-color);
-        color: var(--main-color);
+        background-color: var(--main-color);
+        color: var(--bg-secondary-color);
     }
 `;
 
