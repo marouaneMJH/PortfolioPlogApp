@@ -7,7 +7,8 @@ const StyledHeader = styled.header`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem 2rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
     background-color: var(--bg-color);
 `;
 
