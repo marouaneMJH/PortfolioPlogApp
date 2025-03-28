@@ -106,7 +106,7 @@ const StyledYear = styled.h2`
 const Posts = () => {
     return (
         <StyledPostsContainer>
-            <PageTitle>Posts</PageTitle>
+            <PageTitle>My Posts</PageTitle>
             {postsByYear
                 .sort((a, b) => b.year - a.year)
                 .map((postYear) => (
