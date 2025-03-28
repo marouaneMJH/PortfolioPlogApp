@@ -17,7 +17,15 @@ const StyledHeroContainer = styled.div`
 `;
 
 const StyledBigName = styled.h1`
-    font-size: 4rem;
+    @media (min-width: 768px) {
+        /* Tablets */
+        font-size: 3rem;
+    }
+
+    @media (min-width: 992px) {
+        /* Small laptops */
+        font-size: 4rem;
+    }
 `;
 
 const Hero = () => {
