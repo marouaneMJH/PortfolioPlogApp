@@ -1,4 +1,11 @@
+import { Sun } from "lucide-react";
 import { useState } from "react";
+import styled from "styled-components";
+const StyledSun = styled(Sun)`
+    border-left: 2px dotted var(--main-color);
+    padding-left: 0.7rem;
+    /* border-radius: 1px; */
+`;
 
 const ThemOption = () => {
     const [theme, setTheme] = useState<"dark" | "light">("light");
@@ -15,7 +22,11 @@ const ThemOption = () => {
 
     return (
         <>
-            <div onClick={() => toggleTheme()}>theme</div>
+            <StyledSun
+                size={18}
+                style={{ marginRight: "8px" }}
+                onClick={() => toggleTheme()}
+            />
         </>
     );
 };
