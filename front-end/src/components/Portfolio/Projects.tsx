@@ -28,6 +28,7 @@ const projects: ProjectInterface[] = [
         descreption:
             "A responsive weather application that fetches data from the OpenWeatherMap API. Users can search for locations, view current weather conditions, and see 5-day forecasts. Built with vanilla JavaScript and CSS Grid for layout.",
         githubLink: new URL("https://github.com/username/weather-app"),
+        demoLink: new URL("https://github.com/username/weather-app"),
     },
     {
         id: 3,
@@ -112,7 +113,6 @@ const ProjectsSection = styled.section`
 
     padding: 4rem 0;
 `;
-
 
 const Projects: React.FC = () => {
     return (
