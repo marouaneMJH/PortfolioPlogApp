@@ -9,7 +9,7 @@ const StyledHeader = styled.header`
     justify-content: space-between;
     padding-top: 1rem;
     padding-bottom: 1rem;
-    background-color: var(--bg-color);
+    /* background-color: var(--bg-color); */
 `;
 
 const StyledLogo = styled.p`
@@ -37,6 +37,7 @@ const NavList = styled.ul`
         font-weight: 500;
         /* transition: font-weight 0s ease; */
         opacity: 0.8;
+
 
         &:hover {
             opacity: 1;
