@@ -9,6 +9,7 @@ const StyledLastName = styled.span`
 
 const StyledHeroContainer = styled.div`
     width: 100%;
+    height: 90vh;
     display: flex;
     gap: 1rem;
     flex-direction: column;
