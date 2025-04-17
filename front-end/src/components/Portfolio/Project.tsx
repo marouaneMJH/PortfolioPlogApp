@@ -83,7 +83,7 @@ const ButtonContainer = styled.div`
 const DemoButton = styled(LinkButton)`
     background-color: #007bff;
     color: white;
-
+    max-width: 1rem;
     &:hover {
         background-color: #0056b3;
     }
@@ -133,7 +133,6 @@ const ProjectCard: React.FC<Props> = ({
                             rel="noopener noreferrer"
                         >
                             <Github size={18} style={{ marginRight: "8px" }} />
-                            GitHub
                         </LinkButton>
                     )}
 
@@ -144,7 +143,6 @@ const ProjectCard: React.FC<Props> = ({
                             rel="noopener noreferrer"
                         >
                             <Link size={18} style={{ marginRight: "8px" }} />
-                            Demo
                         </DemoButton>
                     )}
                 </ButtonContainer>

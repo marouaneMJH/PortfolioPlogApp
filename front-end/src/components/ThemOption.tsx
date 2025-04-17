@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { Sun, Moon } from "lucide-react";
 const ThemOption = () => {
     const [theme, setTheme] = useState<"dark" | "light">("light");
 
@@ -14,8 +14,14 @@ const ThemOption = () => {
     };
 
     return (
+
+        // debug instead the inverce
         <>
-            <div onClick={() => toggleTheme()}>theme</div>
+            {theme === "dark" ? (
+                <Sun onClick={() => toggleTheme()} />
+            ) : (
+                <Moon onClick={() => toggleTheme()} />
+            )}
         </>
     );
 };
