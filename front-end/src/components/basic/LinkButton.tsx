@@ -14,6 +14,7 @@ const LinkButton = styled(NavLink)`
     font-weight: 500;
     transition: all 0.3s ease;
 
+    
     background-color: var(--bg-secondary-color);
     color: var(--main-color);
     &:hover {
