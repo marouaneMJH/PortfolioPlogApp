@@ -35,7 +35,7 @@ const NavList = styled.ul`
         text-decoration: none;
         color: var(--text-color);
         font-weight: 500;
-        /* transition: -- 0.3s ease; */
+        /* transition: font-weight 0s ease; */
         opacity: 0.8;
 
 

@@ -35,6 +35,7 @@ const LinkButton = styled(NavLink)<LinkButtonProps>`
     padding: ${(props) => props.$padding || "0 1rem"};
     box-sizing: border-box;
 
+    
     background-color: var(--bg-secondary-color);
     color: var(--main-color);
     &:hover {

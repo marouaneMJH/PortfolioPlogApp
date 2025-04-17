@@ -6,8 +6,10 @@ interface ContainerProps {
     $maxWidth?: string;
     $padding?: string;
     $margin?: string;
+    $notMain?: boolean;
     $flex?: boolean;
     $gap?: string;
+    $flexDirection?: "column" | "row";
     $alignItems?: "flex-start" | "center" | "flex-end" | "stretch";
     $justifyContent?:
         | "flex-start"
@@ -19,10 +21,13 @@ interface ContainerProps {
 
 const Container = styled.div<ContainerProps>`
     width: 100%;
+    height: ${(props) => props.$notMain && "80vh"};
     max-width: ${(props) => props.$maxWidth || "100%"};
     margin: ${(props) => props.$margin || "0 auto"};
     padding: ${(props) => props.$padding || "0 1rem"};
     box-sizing: border-box;
+    flex-direction: ${(props) => props.$flexDirection || ""};
+    overflow-y: auto;
 
     ${(props) =>
         props.$flex &&

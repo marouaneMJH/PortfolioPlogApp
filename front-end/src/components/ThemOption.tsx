@@ -21,6 +21,8 @@ const ThemOption = () => {
     };
 
     return (
+
+        // debug instead the inverce
         <>
             <StyledSun
                 size={18}
