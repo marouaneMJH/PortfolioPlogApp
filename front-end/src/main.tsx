@@ -8,7 +8,12 @@ import Portfolio from "./pages/Portfolio.tsx";
 import Contact from "./pages/Contact.tsx";
 import Posts from "./pages/Posts.tsx";
 import Home from "./pages/Home.tsx";
+import DashBord from "./pages/AdminDashBord.tsx";
 import Post from "./components/plog/Post.tsx";
+import {
+    CreatePostSection,
+    CreateProjectSection,
+} from "./dialogs/admin/AddProject.tsx";
 
 const router = createBrowserRouter([
     {
@@ -39,6 +44,21 @@ const router = createBrowserRouter([
             {
                 path: "/",
                 element: <Home />,
+            },
+            {
+                // todo auth with JWT
+                path: "dash-bord",
+                element: <DashBord />,
+                children: [
+                    {
+                        path: "new-project",
+                        element: <CreateProjectSection />,
+                    },
+                    {
+                        path: "new-post",
+                        element: <CreatePostSection />,
+                    },
+                ],
             },
         ],
     },
