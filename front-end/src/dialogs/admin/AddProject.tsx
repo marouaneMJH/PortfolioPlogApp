@@ -324,12 +324,10 @@ const PreviewImage = styled.div<{ $bgImage?: string }>`
 `;
 
 const CreateProjectSection: React.FC = () => {
-    // Fix: Use null for URL fields instead of invalid URL objects
     const [projectData, setProjectData] = useState<Partial<ProjectInterface>>({
         title: "",
         breafDescreption: "",
         descreption: "",
-        // Remove invalid URL initialization
     });
     const [githubLinkStr, setGithubLinkStr] = useState<string>("");
     const [demoLinkStr, setDemoLinkStr] = useState<string>("");
@@ -361,45 +359,48 @@ const CreateProjectSection: React.FC = () => {
             setImagePreview(imageUrl);
         }
     };
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
 
-        const formData = new FormData();
-        formData.append("title", projectData.title || "");
-        formData.append("breafDescreption", projectData.breafDescreption || "");
-        formData.append("descreption", projectData.descreption || "");
+        // Create a regular JSON object instead of FormData
+        const projectPayload = {
+            title: projectData.title || "",
+            breafDescreption: projectData.breafDescreption || "",
+            descreption: projectData.descreption || "",
+            // Either omit imagePath entirely or set it to null/empty string
+            imagePath: "", // this matches your DTO
+            demoLink: projectData.demoLink,
+            githubLink: projectData.githubLink,
+        };
 
         // Safely handle URLs
-        if (githubLinkStr.trim() !== "") {
-            try {
-                const githubUrl = new URL(githubLinkStr);
-                formData.append("githubLink", githubUrl.toString());
-            } catch {
-                alert("Invalid GitHub URL");
-                setIsLoading(false);
-                return;
-            }
-        }
+        // if (githubLinkStr.trim() !== "") {
+        //     try {
+        //         const githubUrl = new URL(githubLinkStr);
+        //         projectPayload.githubLink = githubUrl.toString();
+        //     } catch {
+        //         alert("Invalid GitHub URL");
+        //         setIsLoading(false);
+        //         return;
+        //     }
+        // }
 
-        if (demoLinkStr.trim() !== "") {
-            try {
-                const demoUrl = new URL(demoLinkStr);
-                formData.append("demoLink", demoUrl.toString());
-            } catch {
-                alert("Invalid Demo URL");
-                setIsLoading(false);
-                return;
-            }
-        }
-
-        if (imageFile) formData.append("image", imageFile);
+        // if (demoLinkStr.trim() !== "") {
+        //     try {
+        //         const demoUrl = new URL(demoLinkStr);
+        //         projectPayload.demoLink = demoUrl.toString();
+        //     } catch {
+        //         alert("Invalid Demo URL");
+        //         setIsLoading(false);
+        //         return;
+        //     }
+        // }
 
         try {
-            await axios.post("http://localhost:3000/project", formData, {
+            await axios.post("http://localhost:3000/project", projectPayload, {
                 headers: {
-                    "Content-Type": "multipart/form-data",
+                    "Content-Type": "application/json",
                 },
             });
 
@@ -459,6 +460,12 @@ const CreateProjectSection: React.FC = () => {
                             />
                         </FileInputWrapper>
                         <PreviewImage $bgImage={imagePreview || undefined} />
+                        {imageFile && (
+                            <small style={{ color: "#666", marginTop: "5px" }}>
+                                Image selected but will not be sent to the
+                                server yet.
+                            </small>
+                        )}
                     </FormGroup>
 
                     <FormGroup>
@@ -525,5 +532,296 @@ const CreateProjectSection: React.FC = () => {
         </Container>
     );
 };
+// Update Project Component
+const UpdateProjectSection: React.FC<{ projectId: number }> = ({
+    projectId,
+}) => {
+    const [projectData, setProjectData] = useState<Partial<ProjectInterface>>({
+        title: "",
+        breafDescreption: "",
+        descreption: "",
+    });
+    const [githubLinkStr, setGithubLinkStr] = useState<string>("");
+    const [demoLinkStr, setDemoLinkStr] = useState<string>("");
+    const [imageFile, setImageFile] = useState<File | null>(null);
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isFetching, setIsFetching] = useState<boolean>(true);
 
-export { CreatePostSection, UpdatePostSection, CreateProjectSection };
+    // Fetch project data on component mount
+    useEffect(() => {
+        const fetchProject = async () => {
+            setIsFetching(true);
+            try {
+                const response = await axios.get(
+                    `http://localhost:3000/project/${projectId}`
+                );
+                const project = response.data;
+
+                setProjectData({
+                    title: project.title,
+                    breafDescreption: project.breafDescreption,
+                    descreption: project.descreption,
+                });
+
+                // Handle URL strings
+                if (project.githubLink) {
+                    setGithubLinkStr(project.githubLink.toString());
+                }
+
+                if (project.demoLink) {
+                    setDemoLinkStr(project.demoLink.toString());
+                }
+
+                // Handle image preview if available
+                if (project.imagePath) {
+                    setImagePreview(project.imagePath.toString());
+                }
+            } catch (error) {
+                console.error("Error fetching project:", error);
+                alert("Failed to fetch project data");
+            } finally {
+                setIsFetching(false);
+            }
+        };
+
+        fetchProject();
+    }, [projectId]);
+
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        const { name, value } = e.target;
+        setProjectData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        if (name === "githubLink") {
+            setGithubLinkStr(value);
+        } else if (name === "demoLink") {
+            setDemoLinkStr(value);
+        }
+    };
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            setImageFile(file);
+            const imageUrl = URL.createObjectURL(file);
+            setImagePreview(imageUrl);
+        }
+    };
+
+    const handleUpdate = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsLoading(true);
+
+        const formData = new FormData();
+        formData.append("title", projectData.title || "");
+        formData.append("breafDescreption", projectData.breafDescreption || "");
+        formData.append("descreption", projectData.descreption || "");
+
+        // Safely handle URLs
+        if (githubLinkStr.trim() !== "") {
+            try {
+                const githubUrl = new URL(githubLinkStr);
+                formData.append("githubLink", githubUrl.toString());
+            } catch {
+                alert("Invalid GitHub URL");
+                setIsLoading(false);
+                return;
+            }
+        }
+
+        if (demoLinkStr.trim() !== "") {
+            try {
+                const demoUrl = new URL(demoLinkStr);
+                formData.append("demoLink", demoUrl.toString());
+            } catch {
+                alert("Invalid Demo URL");
+                setIsLoading(false);
+                return;
+            }
+        }
+
+        // Skip sending image file to backend
+        // The image is still previewed in the UI but not sent to the API
+        // Original code: if (imageFile) { formData.append("image", imageFile); }
+
+        try {
+            await axios.patch(
+                `http://localhost:3000/project/${projectId}`,
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+
+            alert("Project updated successfully!");
+        } catch (error) {
+            console.error("Error updating project:", error);
+            alert("Failed to update project.");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleDelete = async () => {
+        if (!window.confirm("Are you sure you want to delete this project?")) {
+            return;
+        }
+
+        setIsLoading(true);
+        try {
+            await axios.delete(`http://localhost:3000/project/${projectId}`);
+            alert("Project deleted successfully!");
+            // Redirect or handle post-deletion navigation here
+            // For example, you could use React Router's navigate function
+            // navigate("/projects");
+        } catch (error) {
+            console.error("Error deleting project:", error);
+            alert("Failed to delete project");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    if (isFetching) {
+        return (
+            <Container>
+                <ContentWrapper>
+                    <p>Loading project data...</p>
+                </ContentWrapper>
+            </Container>
+        );
+    }
+
+    return (
+        <Container>
+            <Header>
+                <Title>
+                    Update <span>Project</span>
+                </Title>
+            </Header>
+
+            <ContentWrapper>
+                <Form onSubmit={handleUpdate}>
+                    <FormGroup>
+                        <Label htmlFor="title">Project Title</Label>
+                        <Input
+                            type="text"
+                            id="title"
+                            name="title"
+                            value={projectData.title}
+                            onChange={handleChange}
+                            placeholder="Enter project title"
+                            required
+                        />
+                    </FormGroup>
+
+                    <FormGroup>
+                        <Label htmlFor="image">Project Image</Label>
+                        <FileInputWrapper>
+                            <FileInputLabel>
+                                {imagePreview ? "Change Image" : "Select Image"}
+                            </FileInputLabel>
+                            <FileInput
+                                type="file"
+                                id="image"
+                                name="image"
+                                accept="image/*"
+                                onChange={handleImageChange}
+                            />
+                        </FileInputWrapper>
+                        <PreviewImage $bgImage={imagePreview || undefined} />
+                        {imageFile && (
+                            <small style={{ color: "#666", marginTop: "5px" }}>
+                                Image selected but will not be sent to the
+                                server yet.
+                            </small>
+                        )}
+                    </FormGroup>
+
+                    <FormGroup>
+                        <Label htmlFor="breafDescreption">
+                            Brief Description
+                        </Label>
+                        <Input
+                            type="text"
+                            id="breafDescreption"
+                            name="breafDescreption"
+                            value={projectData.breafDescreption}
+                            onChange={handleChange}
+                            placeholder="Enter a brief description"
+                            required
+                        />
+                    </FormGroup>
+
+                    <FormGroup>
+                        <Label htmlFor="descreption">
+                            Detailed Description
+                        </Label>
+                        <TextArea
+                            id="descreption"
+                            name="descreption"
+                            value={projectData.descreption}
+                            onChange={handleChange}
+                            placeholder="Write detailed project description..."
+                            rows={8}
+                            required
+                        />
+                    </FormGroup>
+
+                    <InputGroup>
+                        <FormGroup>
+                            <Label htmlFor="githubLink">GitHub Link</Label>
+                            <Input
+                                type="url"
+                                id="githubLink"
+                                name="githubLink"
+                                value={githubLinkStr}
+                                onChange={handleUrlChange}
+                                placeholder="https://github.com/marouaneMJH/repo"
+                            />
+                        </FormGroup>
+
+                        <FormGroup>
+                            <Label htmlFor="demoLink">Demo Link</Label>
+                            <Input
+                                type="url"
+                                id="demoLink"
+                                name="demoLink"
+                                value={demoLinkStr}
+                                onChange={handleUrlChange}
+                                placeholder="https://demo-link.com"
+                            />
+                        </FormGroup>
+                    </InputGroup>
+
+                    <ButtonGroup>
+                        <DeleteButton
+                            type="button"
+                            onClick={handleDelete}
+                            disabled={isLoading}
+                        >
+                            Delete Project
+                        </DeleteButton>
+                        <SubmitButton type="submit" disabled={isLoading}>
+                            {isLoading ? "Updating..." : "Update Project"}
+                        </SubmitButton>
+                    </ButtonGroup>
+                </Form>
+            </ContentWrapper>
+        </Container>
+    );
+};
+
+export {
+    CreatePostSection,
+    UpdatePostSection,
+    CreateProjectSection,
+    UpdateProjectSection,
+};

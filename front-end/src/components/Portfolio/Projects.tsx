@@ -120,7 +120,7 @@ const Projects: React.FC = () => {
 
     useEffect(() => {
         axios
-            .get("http://localhost:3000/projects")
+            .get("http://localhost:3000/project")
             .then((response) => {
                 setProjects(response.data);
             })
