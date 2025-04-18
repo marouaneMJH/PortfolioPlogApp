@@ -1,10 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import axios from "axios";
+
 import PostInterface from "../../interface/PostInterface";
 import ProjectInterface from "../../interface/ProjectInterface";
-// Import interfaces
+import Title from "./../../components/styled/SectionTitle";
+import Header from "./../../components/styled/SectionHeader";
+import Form, { FormGroup } from "./../../components/basic/Form";
+import Input, {
+    FileInput,
+    InputGroup,
+} from "../../components/basic/input/Input";
+import TextArea from "../../components/basic/input/TextArea";
+import Label, { FileInputLabel } from "../../components/Label";
 
-// Shared styled components (these would be imported from a shared file in a real app)
 const Container = styled.div`
     width: 100%;
     min-height: 100vh;
@@ -18,64 +27,12 @@ const Container = styled.div`
     overflow: hidden;
 `;
 
-const Header = styled.div`
-    display: flex;
-    align-items: center;
-    margin-bottom: 2.5rem;
-`;
-
-const Title = styled.h1`
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: var(--main-color);
-
-    span {
-        color: var(--secondary-color);
-    }
-`;
-
 const ContentWrapper = styled.div`
     width: 100%;
     max-width: 1000px;
     background-color: var(--bg-secondary-color);
     border-radius: 1rem;
     padding: 2rem;
-`;
-
-const Form = styled.form`
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-`;
-
-const Input = styled.input`
-    width: 100%;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    background-color: rgba(30, 30, 34, 0.7);
-    color: var(--main-color);
-    border: none;
-    outline: none;
-
-    &:focus {
-        box-shadow: 0 0 0 2px var(--secondary-color);
-    }
-`;
-
-const TextArea = styled.textarea`
-    width: 100%;
-    min-height: 8rem;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    background-color: rgba(30, 30, 34, 0.7);
-    color: var(--main-color);
-    border: none;
-    resize: vertical;
-    outline: none;
-
-    &:focus {
-        box-shadow: 0 0 0 2px var(--secondary-color);
-    }
 `;
 
 const SubmitButton = styled.button`
@@ -94,65 +51,36 @@ const SubmitButton = styled.button`
     }
 `;
 
-const Label = styled.label`
-    color: var(--main-color);
-    margin-bottom: 0.5rem;
-    display: block;
+const DeleteButton = styled.button`
+    align-self: flex-start;
+    padding: 1rem 2rem;
+    border-radius: 2rem;
+    background-color: #d32f2f;
+    color: white;
     font-weight: 500;
-`;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
 
-const FormGroup = styled.div`
-    display: flex;
-    flex-direction: column;
-`;
-
-const InputGroup = styled.div`
-    display: flex;
-    gap: 1rem;
-
-    @media (max-width: 768px) {
-        flex-direction: column;
+    &:hover {
+        background-color: #b71c1c;
     }
 `;
 
-// const BackgroundEffect = styled.div`
-//     position: absolute;
-//     inset: 0;
-//     pointer-events: none;
-//     z-index: 0;
+const ButtonGroup = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+`;
 
-//     &::after {
-//         content: "";
-//         position: absolute;
-//         width: 200%;
-//         height: 200%;
-//         background: radial-gradient(
-//             circle,
-//             rgba(0, 255, 240, 0.1) 0%,
-//             rgba(0, 128, 255, 0.1) 50%,
-//             rgba(0, 0, 255, 0.1) 100%
-//         );
-//         top: -50%;
-//         left: -50%;
-//         animation: rotate 60s linear infinite;
-//     }
-
-//     @keyframes rotate {
-//         from {
-//             transform: rotate(0deg);
-//         }
-//         to {
-//             transform: rotate(360deg);
-//         }
-//     }
-// `;
-
-// Custom components for Create Post
+// Create Post Component
 const CreatePostSection: React.FC = () => {
     const [postData, setPostData] = useState<Partial<PostInterface>>({
         title: "",
         content: "",
     });
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -161,22 +89,31 @@ const CreatePostSection: React.FC = () => {
         setPostData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const newPost: PostInterface = {
-            id: Math.floor(Math.random() * 10000), // Generate random ID for demo
-            title: postData.title || "",
-            createdAt: new Date(),
-            content: postData.content,
-        };
-        console.log("New post created:", newPost);
-        alert("Post created successfully!");
-        setPostData({ title: "", content: "" });
+        setIsLoading(true);
+
+        try {
+            const response = await axios.post("http://localhost:3000/post", {
+                title: postData.title,
+                content: postData.content,
+                createdAt: new Date(),
+                // No need to send ID as it will be generated by the server
+            });
+
+            console.log("Post created:", response.data);
+            alert("Post created successfully!");
+            setPostData({ title: "", content: "" });
+        } catch (error) {
+            console.error("Error creating post:", error);
+            alert("Failed to create post");
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
         <Container>
-
             <Header>
                 <Title>
                     Create <span>Post</span>
@@ -211,7 +148,156 @@ const CreatePostSection: React.FC = () => {
                         />
                     </FormGroup>
 
-                    <SubmitButton type="submit">Publish Post</SubmitButton>
+                    <SubmitButton type="submit" disabled={isLoading}>
+                        {isLoading ? "Publishing..." : "Publish Post"}
+                    </SubmitButton>
+                </Form>
+            </ContentWrapper>
+        </Container>
+    );
+};
+
+// Update Post Component
+const UpdatePostSection: React.FC<{ postId: number }> = ({ postId }) => {
+    const [postData, setPostData] = useState<Partial<PostInterface>>({
+        title: "",
+        content: "",
+    });
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isFetching, setIsFetching] = useState<boolean>(true);
+
+    // Fetch post data on component mount
+    useEffect(() => {
+        const fetchPost = async () => {
+            setIsFetching(true);
+            try {
+                const response = await axios.get(
+                    `http://localhost:3000/post/${postId}`
+                );
+                const post = response.data;
+                setPostData({
+                    title: post.title,
+                    content: post.content,
+                });
+            } catch (error) {
+                console.error("Error fetching post:", error);
+                alert("Failed to fetch post data");
+            } finally {
+                setIsFetching(false);
+            }
+        };
+
+        fetchPost();
+    }, [postId]);
+
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        const { name, value } = e.target;
+        setPostData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleUpdate = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsLoading(true);
+
+        try {
+            const response = await axios.patch(
+                `http://localhost:3000/post/${postId}`,
+                {
+                    title: postData.title,
+                    content: postData.content,
+                }
+            );
+
+            console.log("Post updated:", response.data);
+            alert("Post updated successfully!");
+        } catch (error) {
+            console.error("Error updating post:", error);
+            alert("Failed to update post");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleDelete = async () => {
+        if (!window.confirm("Are you sure you want to delete this post?")) {
+            return;
+        }
+
+        setIsLoading(true);
+        try {
+            await axios.delete(`http://localhost:3000/post/${postId}`);
+            alert("Post deleted successfully!");
+            // Redirect or handle post-deletion navigation here
+            // For example, you could use React Router's navigate function
+            // navigate("/posts");
+        } catch (error) {
+            console.error("Error deleting post:", error);
+            alert("Failed to delete post");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    if (isFetching) {
+        return (
+            <Container>
+                <ContentWrapper>
+                    <p>Loading post data...</p>
+                </ContentWrapper>
+            </Container>
+        );
+    }
+
+    return (
+        <Container>
+            <Header>
+                <Title>
+                    Update <span>Post</span>
+                </Title>
+            </Header>
+
+            <ContentWrapper>
+                <Form onSubmit={handleUpdate}>
+                    <FormGroup>
+                        <Label htmlFor="title">Post Title</Label>
+                        <Input
+                            type="text"
+                            id="title"
+                            name="title"
+                            value={postData.title}
+                            onChange={handleChange}
+                            placeholder="Enter post title"
+                            required
+                        />
+                    </FormGroup>
+
+                    <FormGroup>
+                        <Label htmlFor="content">Content</Label>
+                        <TextArea
+                            id="content"
+                            name="content"
+                            value={postData.content}
+                            onChange={handleChange}
+                            placeholder="Write your post content here..."
+                            rows={12}
+                            required
+                        />
+                    </FormGroup>
+
+                    <ButtonGroup>
+                        <DeleteButton
+                            type="button"
+                            onClick={handleDelete}
+                            disabled={isLoading}
+                        >
+                            Delete Post
+                        </DeleteButton>
+                        <SubmitButton type="submit" disabled={isLoading}>
+                            {isLoading ? "Updating..." : "Update Post"}
+                        </SubmitButton>
+                    </ButtonGroup>
                 </Form>
             </ContentWrapper>
         </Container>
@@ -222,32 +308,6 @@ const CreatePostSection: React.FC = () => {
 const FileInputWrapper = styled.div`
     position: relative;
     width: 100%;
-`;
-
-const FileInput = styled.input`
-    opacity: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-`;
-
-const FileInputLabel = styled.div`
-    padding: 1rem;
-    background-color: rgba(30, 30, 34, 0.7);
-    color: var(--main-color);
-    border-radius: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border: 1px dashed #444;
-
-    &:hover {
-        border-color: var(--secondary-color);
-    }
 `;
 
 const PreviewImage = styled.div<{ $bgImage?: string }>`
@@ -264,14 +324,18 @@ const PreviewImage = styled.div<{ $bgImage?: string }>`
 `;
 
 const CreateProjectSection: React.FC = () => {
+    // Fix: Use null for URL fields instead of invalid URL objects
     const [projectData, setProjectData] = useState<Partial<ProjectInterface>>({
         title: "",
         breafDescreption: "",
         descreption: "",
-        githubLink: undefined,
-        demoLink: undefined,
+        // Remove invalid URL initialization
     });
+    const [githubLinkStr, setGithubLinkStr] = useState<string>("");
+    const [demoLinkStr, setDemoLinkStr] = useState<string>("");
+    const [imageFile, setImageFile] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -280,47 +344,85 @@ const CreateProjectSection: React.FC = () => {
         setProjectData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            const file = e.target.files[0];
-            const imageUrl = URL.createObjectURL(file);
-            setImagePreview(imageUrl);
-            // In a real app, you'd handle the file upload here
+    const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        if (name === "githubLink") {
+            setGithubLinkStr(value);
+        } else if (name === "demoLink") {
+            setDemoLinkStr(value);
         }
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            setImageFile(file);
+            const imageUrl = URL.createObjectURL(file);
+            setImagePreview(imageUrl);
+        }
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const newProject: ProjectInterface = {
-            id: Math.floor(Math.random() * 10000), // Generate random ID for demo
-            title: projectData.title || "",
-            breafDescreption: projectData.breafDescreption || "",
-            descreption: projectData.descreption || "",
-            // In a real app, you'd handle the file upload and store the URL
-            imagePath: imagePreview ? new URL(imagePreview) : undefined,
-            githubLink: projectData.githubLink
-                ? new URL(projectData.githubLink.toString())
-                : undefined,
-            demoLink: projectData.demoLink
-                ? new URL(projectData.demoLink.toString())
-                : undefined,
-        };
-        console.log("New project created:", newProject);
-        alert("Project created successfully!");
-        setProjectData({
-            title: "",
-            breafDescreption: "",
-            descreption: "",
-            githubLink: undefined,
-            demoLink: undefined,
-        });
-        setImagePreview(null);
+        setIsLoading(true);
+
+        const formData = new FormData();
+        formData.append("title", projectData.title || "");
+        formData.append("breafDescreption", projectData.breafDescreption || "");
+        formData.append("descreption", projectData.descreption || "");
+
+        // Safely handle URLs
+        if (githubLinkStr.trim() !== "") {
+            try {
+                const githubUrl = new URL(githubLinkStr);
+                formData.append("githubLink", githubUrl.toString());
+            } catch {
+                alert("Invalid GitHub URL");
+                setIsLoading(false);
+                return;
+            }
+        }
+
+        if (demoLinkStr.trim() !== "") {
+            try {
+                const demoUrl = new URL(demoLinkStr);
+                formData.append("demoLink", demoUrl.toString());
+            } catch {
+                alert("Invalid Demo URL");
+                setIsLoading(false);
+                return;
+            }
+        }
+
+        if (imageFile) formData.append("image", imageFile);
+
+        try {
+            await axios.post("http://localhost:3000/project", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+
+            alert("Project created successfully!");
+            setProjectData({
+                title: "",
+                breafDescreption: "",
+                descreption: "",
+            });
+            setGithubLinkStr("");
+            setDemoLinkStr("");
+            setImageFile(null);
+            setImagePreview(null);
+        } catch (error) {
+            console.error("Error creating project:", error);
+            alert("Failed to create project.");
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
         <Container>
-            {/* <BackgroundEffect /> */}
-
             <Header>
                 <Title>
                     Create <span>Project</span>
@@ -396,9 +498,9 @@ const CreateProjectSection: React.FC = () => {
                                 type="url"
                                 id="githubLink"
                                 name="githubLink"
-                                value={projectData.githubLink?.toString() || ""}
-                                onChange={handleChange}
-                                placeholder="https://github.com/username/repo"
+                                value={githubLinkStr}
+                                onChange={handleUrlChange}
+                                placeholder="https://github.com/marouaneMJH/repo"
                             />
                         </FormGroup>
 
@@ -408,18 +510,20 @@ const CreateProjectSection: React.FC = () => {
                                 type="url"
                                 id="demoLink"
                                 name="demoLink"
-                                value={projectData.demoLink?.toString() || ""}
-                                onChange={handleChange}
+                                value={demoLinkStr}
+                                onChange={handleUrlChange}
                                 placeholder="https://demo-link.com"
                             />
                         </FormGroup>
                     </InputGroup>
 
-                    <SubmitButton type="submit">Create Project</SubmitButton>
+                    <SubmitButton type="submit" disabled={isLoading}>
+                        {isLoading ? "Creating..." : "Create Project"}
+                    </SubmitButton>
                 </Form>
             </ContentWrapper>
         </Container>
     );
 };
 
-export { CreatePostSection, CreateProjectSection };
+export { CreatePostSection, UpdatePostSection, CreateProjectSection };

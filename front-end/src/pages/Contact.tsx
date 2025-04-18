@@ -311,7 +311,7 @@ const ContactPage: React.FC = () => {
                         <IconWrapper>
                             <FacebookIcon />
                         </IconWrapper>
-                        <InfoText>@facebookNick</InfoText>
+                        <InfoText>@facebookMarouane</InfoText>
                     </InfoItem>
                 </InfoColumn>
 

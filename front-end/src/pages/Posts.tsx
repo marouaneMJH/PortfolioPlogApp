@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PostsInterface from "../interface/PostsInterface";
 import PostRow from "../components/plog/PostRow";
 import styled from "styled-components";
@@ -104,6 +104,7 @@ const StyledYear = styled.h2`
 `;
 
 const Posts = () => {
+    useEffect(() => {}, []);
     return (
         <StyledPostsContainer>
             <PageTitle>My Posts</PageTitle>

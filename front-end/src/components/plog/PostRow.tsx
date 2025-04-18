@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PostInterface from "./../../interface/PostInterface";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { Trash } from "lucide-react";
+import axios from "axios";
 
 const StyledPostRow = styled.div`
     display: flex;
@@ -15,7 +17,24 @@ const StyledPostRowTitle = styled(Link)`
     text-decoration: none;
     /* font-weight: bold; */
 `;
+
 const PostRow = (post: PostInterface) => {
+    const [deleted, setDeleted] = useState<boolean>(false);
+    const handleDelete = () => {
+        setDeleted(true);
+    };
+    useEffect(() => {
+        if (deleted)
+            axios
+                .delete(`http://localhost:3000/post/${post.id}`)
+                .then((val) => alert(`Done, ${val}`))
+                .catch((val) => alert(`Problem, ${val}`));
+    }, [deleted]);
+
+    if (deleted) {
+        return <></>;
+    }
+
     return (
         <StyledPostRow>
             <StyledPostRowTitle to={`/posts/${post.id}`}>
@@ -24,6 +43,7 @@ const PostRow = (post: PostInterface) => {
             <StyledPostRowTitle to={`/posts/${post.id}`}>
                 {post.createdAt.toDateString()}
             </StyledPostRowTitle>
+            <Trash onClick={handleDelete} />
         </StyledPostRow>
     );
 };
