@@ -359,48 +359,46 @@ const CreateProjectSection: React.FC = () => {
             setImagePreview(imageUrl);
         }
     };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
 
-        // Create a regular JSON object instead of FormData
-        const projectPayload = {
+        // Create a project payload that matches the DTO structure
+        const projectPayload: any = {
             title: projectData.title || "",
             breafDescreption: projectData.breafDescreption || "",
             descreption: projectData.descreption || "",
-            // Either omit imagePath entirely or set it to null/empty string
-            imagePath: "", // this matches your DTO
-            demoLink: projectData.demoLink,
-            githubLink: projectData.githubLink,
+            imagePath: "", // Empty string for imagePath as per DTO
         };
 
         // Safely handle URLs
-        // if (githubLinkStr.trim() !== "") {
-        //     try {
-        //         const githubUrl = new URL(githubLinkStr);
-        //         projectPayload.githubLink = githubUrl.toString();
-        //     } catch {
-        //         alert("Invalid GitHub URL");
-        //         setIsLoading(false);
-        //         return;
-        //     }
-        // }
+        if (githubLinkStr.trim() !== "") {
+            try {
+                const githubUrl = new URL(githubLinkStr);
+                projectPayload.githubLink = githubUrl.toString();
+            } catch {
+                alert("Invalid GitHub URL");
+                setIsLoading(false);
+                return;
+            }
+        }
 
-        // if (demoLinkStr.trim() !== "") {
-        //     try {
-        //         const demoUrl = new URL(demoLinkStr);
-        //         projectPayload.demoLink = demoUrl.toString();
-        //     } catch {
-        //         alert("Invalid Demo URL");
-        //         setIsLoading(false);
-        //         return;
-        //     }
-        // }
+        if (demoLinkStr.trim() !== "") {
+            try {
+                const demoUrl = new URL(demoLinkStr);
+                projectPayload.demoLink = demoUrl.toString();
+            } catch {
+                alert("Invalid Demo URL");
+                setIsLoading(false);
+                return;
+            }
+        }
 
         try {
             await axios.post("http://localhost:3000/project", projectPayload, {
                 headers: {
-                    "Content-Type": "application/json",
+                    "Content-Type": "application/json", // Changed to JSON instead of FormData
                 },
             });
 
@@ -547,6 +545,9 @@ const UpdateProjectSection: React.FC<{ projectId: number }> = ({
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isFetching, setIsFetching] = useState<boolean>(true);
+    const [originalImagePath, setOriginalImagePath] = useState<string | null>(
+        null
+    );
 
     // Fetch project data on component mount
     useEffect(() => {
@@ -576,6 +577,7 @@ const UpdateProjectSection: React.FC<{ projectId: number }> = ({
                 // Handle image preview if available
                 if (project.imagePath) {
                     setImagePreview(project.imagePath.toString());
+                    setOriginalImagePath(project.imagePath.toString());
                 }
             } catch (error) {
                 console.error("Error fetching project:", error);
@@ -617,17 +619,20 @@ const UpdateProjectSection: React.FC<{ projectId: number }> = ({
         e.preventDefault();
         setIsLoading(true);
 
-        const formData = new FormData();
-        formData.append("title", projectData.title || "");
-        formData.append("breafDescreption", projectData.breafDescreption || "");
-        formData.append("descreption", projectData.descreption || "");
+        // Create a project payload that matches the DTO structure
+        const projectPayload: any = {
+            title: projectData.title || "",
+            breafDescreption: projectData.breafDescreption || "",
+            descreption: projectData.descreption || "",
+            imagePath: originalImagePath || "", // Keep the original image path
+        };
 
         // Safely handle URLs
         if (githubLinkStr.trim() !== "") {
             try {
                 const githubUrl = new URL(githubLinkStr);
-                formData.append("githubLink", githubUrl.toString());
-            } catch {
+                projectPayload.githubLink = githubUrl.toString();
+            } catch (error) {
                 alert("Invalid GitHub URL");
                 setIsLoading(false);
                 return;
@@ -637,25 +642,21 @@ const UpdateProjectSection: React.FC<{ projectId: number }> = ({
         if (demoLinkStr.trim() !== "") {
             try {
                 const demoUrl = new URL(demoLinkStr);
-                formData.append("demoLink", demoUrl.toString());
-            } catch {
+                projectPayload.demoLink = demoUrl.toString();
+            } catch (error) {
                 alert("Invalid Demo URL");
                 setIsLoading(false);
                 return;
             }
         }
 
-        // Skip sending image file to backend
-        // The image is still previewed in the UI but not sent to the API
-        // Original code: if (imageFile) { formData.append("image", imageFile); }
-
         try {
             await axios.patch(
                 `http://localhost:3000/project/${projectId}`,
-                formData,
+                projectPayload,
                 {
                     headers: {
-                        "Content-Type": "multipart/form-data",
+                        "Content-Type": "application/json", // Changed to JSON instead of FormData
                     },
                 }
             );
