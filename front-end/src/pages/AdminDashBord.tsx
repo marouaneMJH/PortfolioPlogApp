@@ -16,7 +16,7 @@ const AdminDashBord = () => {
                 </Title>
             </Header>
             <LinkButton to={"new-project"}>New Project</LinkButton>
-            <LinkButton to={"pnew-post"}>New Post</LinkButton>
+            <LinkButton to={"new-post"}>New Post</LinkButton>
 
             <Outlet />
         </div>

@@ -134,7 +134,7 @@ const AboutPage: React.FC = () => {
             <ContentWrapper>
                 <ProfileSection>
                     <ProfileImage
-                        src="/path-to-your-image.jpg"
+                        src="https://upload.wikimedia.org/wikipedia/commons/5/5d/Canis_lupus_arctos_qtl1.jpg"
                         alt="Marouane El Moujahid"
                     />
                 </ProfileSection>
