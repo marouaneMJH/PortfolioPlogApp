@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const InputGroup = styled.div`
     display: flex;
-    gap: 1rem;
+    gap: 3rem;
 
     @media (max-width: 768px) {
         flex-direction: column;
@@ -32,7 +32,5 @@ const Input = styled.input`
         box-shadow: 0 0 0 2px var(--secondary-color);
     }
 `;
-
-
 
 export default Input;

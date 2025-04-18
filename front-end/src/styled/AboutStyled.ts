@@ -65,7 +65,7 @@ export const Title = styled.h2`
 `;
 
 export const TitleHighlight = styled.span`
-    color: #fff;
+    color: var(--main-color);
     font-weight: 600;
 `;
 

@@ -10,10 +10,14 @@ import Posts from "./pages/Posts.tsx";
 import Home from "./pages/Home.tsx";
 import DashBord from "./pages/AdminDashBord.tsx";
 import Post from "./components/plog/Post.tsx";
-import {
-    CreatePostSection,
-    CreateProjectSection,
-} from "./dialogs/admin/AddProject.tsx";
+
+// import {
+//     CreatePostSection,
+//     // CreateProjectSection,
+// } from "./dialogs/admin/AddProject.tsx";
+
+import CreateProjectSection from "./dialogs/admin/addProjectModal.tsx";
+import CreatePostSection from "./dialogs/admin/addPostModal.tsx";
 
 const router = createBrowserRouter([
     {
@@ -38,7 +42,7 @@ const router = createBrowserRouter([
                 path: "/posts",
                 children: [
                     { index: true, element: <Posts /> },
-                    { path: ":title", element: <Post /> },
+                    { path: ":postId", element: <Post /> },
                 ],
             },
             {

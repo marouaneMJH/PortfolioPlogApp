@@ -90,7 +90,7 @@ const StyledProjectsContainer = styled.div`
     @media (min-width: 1200px) {
         /* Desktop */
         grid-template-columns: repeat(3, auto);
-        gap: 3.5rem;
+        gap: 2rem;
     }
 
     @media (min-width: 1440px) {

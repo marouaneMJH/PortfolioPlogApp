@@ -145,7 +145,7 @@ const AboutPage: React.FC = () => {
                         <LastName>EL MOUJAHID</LastName>
                     </Name>
                     <Title>
-                        Software <TitleHighlight>Engineer</TitleHighlight>
+                        Software <TitleHighlight>Engineer Student</TitleHighlight>
                     </Title>
 
                     <Divider />
@@ -353,15 +353,15 @@ const Modal: React.FC<ModalProps> = ({ onClose, activeTab, setActiveTab }) => {
                                 </SkillItem>
 
                                 <SkillItem>
-                                    <SkillCircle percentage={75}>
-                                        <SkillPercentage>75%</SkillPercentage>
+                                    <SkillCircle percentage={70}>
+                                        <SkillPercentage>70%</SkillPercentage>
                                     </SkillCircle>
                                     <SkillName>French</SkillName>
                                 </SkillItem>
 
                                 <SkillItem>
-                                    <SkillCircle percentage={70}>
-                                        <SkillPercentage>70%</SkillPercentage>
+                                    <SkillCircle percentage={75}>
+                                        <SkillPercentage>75%</SkillPercentage>
                                     </SkillCircle>
                                     <SkillName>English</SkillName>
                                 </SkillItem>

@@ -30,7 +30,7 @@ const Container = styled.div`
 const ContentWrapper = styled.div`
     width: 100%;
     max-width: 1000px;
-    background-color: var(--bg-secondary-color);
+    /* background-color: var(--bg-secondary-color); */
     border-radius: 1rem;
     padding: 2rem;
 `;

@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { Edit, Trash } from "lucide-react";
 import axios from "axios";
-
+import UpdatePostModal from "./../../dialogs/admin/UpdatePostModal";
 const StyledPostRow = styled.div`
     display: flex;
     justify-content: space-between;
@@ -21,6 +21,7 @@ const StyledPostRowTitle = styled(Link)`
 const PostRow = (post: PostInterface) => {
     const [deleted, setDeleted] = useState<boolean>(false);
     const [hovered, setHovered] = useState<boolean>(false);
+    const [editModal, setEditModal] = useState<boolean>(false);
     const handleDelete = () => {
         setDeleted(true);
     };
@@ -50,11 +51,13 @@ const PostRow = (post: PostInterface) => {
             {hovered ? (
                 <div>
                     <Trash onClick={handleDelete} />
-                    <Edit onClick={() => alert("hello")} />
+                    <Edit onClick={() => setEditModal(true)} />
                 </div>
             ) : (
                 ""
             )}
+
+            {editModal ? <UpdatePostModal  onClick post={post} /> : ""}
         </StyledPostRow>
     );
 };
