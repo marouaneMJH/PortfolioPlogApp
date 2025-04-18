@@ -7,13 +7,16 @@ import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 
 @Injectable()
-export class ProjectService {
+export class ProjectService { 
   constructor(
     @InjectRepository(Project)
     private projectRepository: Repository<Project>,
   ) {}
 
   create(createProjectDto: CreateProjectDto) {
+    if (createProjectDto.title.length == 0) {
+      createProjectDto.title = 'random title';
+    }
     const project = this.projectRepository.create(createProjectDto);
     return this.projectRepository.save(project);
   }

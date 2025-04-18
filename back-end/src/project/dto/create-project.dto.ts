@@ -3,7 +3,7 @@ export class CreateProjectDto {
   title: string;
   imagePath?: string;
   breafDescreption: string;
-  descreption: string;
-  githubLink?: string;
+  descreption: string; 
+  githubLink?: string; 
   demoLink?: string;
 }
