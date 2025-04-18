@@ -38,7 +38,6 @@ const NavList = styled.ul`
         /* transition: font-weight 0s ease; */
         opacity: 0.8;
 
-
         &:hover {
             opacity: 1;
         }
@@ -58,7 +57,9 @@ const HeaderRight = styled.div`
 const HeaderCom: React.FC = () => {
     return (
         <StyledHeader>
-            <StyledLogo>MJH</StyledLogo>
+            <NavLink to="dash-bord">
+                <StyledLogo>MJH</StyledLogo>
+            </NavLink>
             <HeaderRight>
                 <StyledNavBar>
                     <NavList>

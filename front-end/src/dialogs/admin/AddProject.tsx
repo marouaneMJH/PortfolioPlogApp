@@ -619,7 +619,7 @@ const UpdateProjectSection: React.FC<{ projectId: number }> = ({
         e.preventDefault();
         setIsLoading(true);
 
-        // Create a project payload that matches the DTO structure
+        // Create a project payload that matches the DTO structure(backend)
         const projectPayload: any = {
             title: projectData.title || "",
             breafDescreption: projectData.breafDescreption || "",
@@ -632,7 +632,7 @@ const UpdateProjectSection: React.FC<{ projectId: number }> = ({
             try {
                 const githubUrl = new URL(githubLinkStr);
                 projectPayload.githubLink = githubUrl.toString();
-            } catch (error) {
+            } catch {
                 alert("Invalid GitHub URL");
                 setIsLoading(false);
                 return;
@@ -643,7 +643,7 @@ const UpdateProjectSection: React.FC<{ projectId: number }> = ({
             try {
                 const demoUrl = new URL(demoLinkStr);
                 projectPayload.demoLink = demoUrl.toString();
-            } catch (error) {
+            } catch {
                 alert("Invalid Demo URL");
                 setIsLoading(false);
                 return;

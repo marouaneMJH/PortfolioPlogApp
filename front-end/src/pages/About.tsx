@@ -208,16 +208,17 @@ const Modal: React.FC<ModalProps> = ({ onClose, activeTab, setActiveTab }) => {
         <ModalOverlay>
             <ModalContainer>
                 <ModalSidebar>
-                    <ProfileImage
+                    {/* <ProfileImage
                         src="/path-to-your-image.jpg"
                         alt="Marouane El Moujahid"
-                    />
+                    /> */}
                     <ModalName>
                         <FirstName>MAROUANE</FirstName>{" "}
                         <LastName>EL MOUJAHID</LastName>
                     </ModalName>
                     <ModalTitle>
-                        Software <TitleHighlight>Engineer</TitleHighlight>
+                        Software{" "}
+                        <TitleHighlight>Engineer Student</TitleHighlight>
                     </ModalTitle>
 
                     <ContactInfo>

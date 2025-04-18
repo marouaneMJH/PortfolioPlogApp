@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PostInterface from "./../../interface/PostInterface";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { Trash } from "lucide-react";
+import { Edit, Trash } from "lucide-react";
 import axios from "axios";
 
 const StyledPostRow = styled.div`
@@ -20,6 +20,7 @@ const StyledPostRowTitle = styled(Link)`
 
 const PostRow = (post: PostInterface) => {
     const [deleted, setDeleted] = useState<boolean>(false);
+    const [hovered, setHovered] = useState<boolean>(false);
     const handleDelete = () => {
         setDeleted(true);
     };
@@ -36,14 +37,24 @@ const PostRow = (post: PostInterface) => {
     }
 
     return (
-        <StyledPostRow>
+        <StyledPostRow
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+        >
             <StyledPostRowTitle to={`/posts/${post.id}`}>
                 {post.title}
             </StyledPostRowTitle>
             <StyledPostRowTitle to={`/posts/${post.id}`}>
                 {post.createdAt.toDateString()}
             </StyledPostRowTitle>
-            <Trash onClick={handleDelete} />
+            {hovered ? (
+                <div>
+                    <Trash onClick={handleDelete} />
+                    <Edit onClick={() => alert("hello")} />
+                </div>
+            ) : (
+                ""
+            )}
         </StyledPostRow>
     );
 };

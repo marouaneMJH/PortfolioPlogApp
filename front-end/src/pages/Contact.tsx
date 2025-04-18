@@ -2,10 +2,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Container from "./../components/basic/Container";
 
-
-
-
-
 // todo dependacy
 const Header = styled.div`
     display: flex;
@@ -52,10 +48,15 @@ const InfoItem = styled.div`
     padding: 1rem;
     display: flex;
     align-items: center;
+
+    & * {
+        background-color: var(--bg-secondary-color);
+    }
 `;
 
 const IconWrapper = styled.div`
     color: var(--secondary-color);
+
     margin-right: 1rem;
 `;
 

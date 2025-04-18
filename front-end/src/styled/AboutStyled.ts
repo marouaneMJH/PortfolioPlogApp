@@ -136,6 +136,11 @@ export const ModalSidebar = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    &  * 
+    {
+        background-color: #1a1a1a;
+
+    }
 `;
 
 export const ModalName = styled.h2`
