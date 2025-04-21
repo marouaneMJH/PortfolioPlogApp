@@ -65,6 +65,22 @@ const router = createBrowserRouter([
                 ],
             },
         ],
+            {
+                // todo auth with JWT
+                path: "dash-bord",
+                element: <DashBord />,
+                children: [
+                    {
+                        path: "new-project",
+                        element: <CreateProjectSection />,
+                    },
+                    {
+                        path: "new-post",
+                        element: <CreatePostSection />,
+                    },
+                ],
+            },
+        ],
     },
 ]);
 

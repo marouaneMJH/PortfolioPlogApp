@@ -38,6 +38,7 @@ const NavList = styled.ul`
         /* transition: font-weight 0s ease; */
         opacity: 0.8;
 
+
         &:hover {
             opacity: 1;
         }
