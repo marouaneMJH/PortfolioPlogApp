@@ -65,7 +65,7 @@ export const Title = styled.h2`
 `;
 
 export const TitleHighlight = styled.span`
-    color: #fff;
+    color: var(--main-color);
     font-weight: 600;
 `;
 
@@ -136,6 +136,11 @@ export const ModalSidebar = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    &  * 
+    {
+        background-color: #1a1a1a;
+
+    }
 `;
 
 export const ModalName = styled.h2`

@@ -92,7 +92,7 @@ const DemoButton = styled(LinkButton)`
 const ProjectCard: React.FC<Props> = ({
     project,
     titleMaxDisplay = 25,
-    contentMaxDisplay = 120,
+    contentMaxDisplay = 110,
 }) => {
     const truncateTitle = (title: string, maxLength: number) => {
         return title.length > maxLength

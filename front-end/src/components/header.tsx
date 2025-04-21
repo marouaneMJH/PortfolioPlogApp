@@ -58,7 +58,9 @@ const HeaderRight = styled.div`
 const HeaderCom: React.FC = () => {
     return (
         <StyledHeader>
-            <StyledLogo>MJH</StyledLogo>
+            <NavLink to="dash-bord">
+                <StyledLogo>MJH</StyledLogo>
+            </NavLink>
             <HeaderRight>
                 <StyledNavBar>
                     <NavList>

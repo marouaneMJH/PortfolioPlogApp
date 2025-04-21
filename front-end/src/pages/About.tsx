@@ -134,7 +134,7 @@ const AboutPage: React.FC = () => {
             <ContentWrapper>
                 <ProfileSection>
                     <ProfileImage
-                        src="/path-to-your-image.jpg"
+                        src="https://upload.wikimedia.org/wikipedia/commons/5/5d/Canis_lupus_arctos_qtl1.jpg"
                         alt="Marouane El Moujahid"
                     />
                 </ProfileSection>
@@ -145,7 +145,7 @@ const AboutPage: React.FC = () => {
                         <LastName>EL MOUJAHID</LastName>
                     </Name>
                     <Title>
-                        Software <TitleHighlight>Engineer</TitleHighlight>
+                        Software <TitleHighlight>Engineer Student</TitleHighlight>
                     </Title>
 
                     <Divider />
@@ -208,16 +208,17 @@ const Modal: React.FC<ModalProps> = ({ onClose, activeTab, setActiveTab }) => {
         <ModalOverlay>
             <ModalContainer>
                 <ModalSidebar>
-                    <ProfileImage
+                    {/* <ProfileImage
                         src="/path-to-your-image.jpg"
                         alt="Marouane El Moujahid"
-                    />
+                    /> */}
                     <ModalName>
                         <FirstName>MAROUANE</FirstName>{" "}
                         <LastName>EL MOUJAHID</LastName>
                     </ModalName>
                     <ModalTitle>
-                        Software <TitleHighlight>Engineer</TitleHighlight>
+                        Software{" "}
+                        <TitleHighlight>Engineer Student</TitleHighlight>
                     </ModalTitle>
 
                     <ContactInfo>
@@ -352,15 +353,15 @@ const Modal: React.FC<ModalProps> = ({ onClose, activeTab, setActiveTab }) => {
                                 </SkillItem>
 
                                 <SkillItem>
-                                    <SkillCircle percentage={75}>
-                                        <SkillPercentage>75%</SkillPercentage>
+                                    <SkillCircle percentage={70}>
+                                        <SkillPercentage>70%</SkillPercentage>
                                     </SkillCircle>
                                     <SkillName>French</SkillName>
                                 </SkillItem>
 
                                 <SkillItem>
-                                    <SkillCircle percentage={70}>
-                                        <SkillPercentage>70%</SkillPercentage>
+                                    <SkillCircle percentage={75}>
+                                        <SkillPercentage>75%</SkillPercentage>
                                     </SkillCircle>
                                     <SkillName>English</SkillName>
                                 </SkillItem>

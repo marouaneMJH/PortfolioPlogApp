@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PostInterface from "./../../interface/PostInterface";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-
+import { Edit, Trash } from "lucide-react";
+import axios from "axios";
+import UpdatePostModal from "./../../dialogs/admin/UpdatePostModal";
 const StyledPostRow = styled.div`
     display: flex;
     justify-content: space-between;
@@ -15,15 +17,47 @@ const StyledPostRowTitle = styled(Link)`
     text-decoration: none;
     /* font-weight: bold; */
 `;
+
 const PostRow = (post: PostInterface) => {
+    const [deleted, setDeleted] = useState<boolean>(false);
+    const [hovered, setHovered] = useState<boolean>(false);
+    const [editModal, setEditModal] = useState<boolean>(false);
+    const handleDelete = () => {
+        setDeleted(true);
+    };
+    useEffect(() => {
+        if (deleted)
+            axios
+                .delete(`http://localhost:3000/post/${post.id}`)
+                .then((val) => alert(`Done, ${val}`))
+                .catch((val) => alert(`Problem, ${val}`));
+    }, [deleted]);
+
+    if (deleted) {
+        return <></>;
+    }
+
     return (
-        <StyledPostRow>
+        <StyledPostRow
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+        >
             <StyledPostRowTitle to={`/posts/${post.id}`}>
                 {post.title}
             </StyledPostRowTitle>
             <StyledPostRowTitle to={`/posts/${post.id}`}>
                 {post.createdAt.toDateString()}
             </StyledPostRowTitle>
+            {hovered ? (
+                <div>
+                    <Trash onClick={handleDelete} />
+                    <Edit onClick={() => setEditModal(true)} />
+                </div>
+            ) : (
+                ""
+            )}
+
+            {editModal ? <UpdatePostModal  onClick post={post} /> : ""}
         </StyledPostRow>
     );
 };
